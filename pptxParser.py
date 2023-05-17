@@ -3,7 +3,7 @@ from pptx import Presentation
 
 def get_presentation_as_list_of_slides(path_to_presentation):
     """
-    Gets   pptx prestation and read it and retun it as list of slides
+    Gets   pptx prestataion and read it and return it as list of slides
 
    Parameters
    ----------
@@ -16,12 +16,13 @@ def get_presentation_as_list_of_slides(path_to_presentation):
         return the presentation as list of dicts
         example:
         [
-        {'index': 1,
-         'text': 'text box:1  mocks\n
-                  text box:2  Python mocks are objects that...'}
-        {'index': 19,
-         'text': 'text box:1  Refactoring code\n
-                  text box:2  The process of improving the design ...'}
+           mocks\n
+           Python mocks are objects that ' ,
+
+         ' Refactoring code\n
+           The process of improving the design ...' ,
+
+           ...
        ]
 
 
@@ -29,14 +30,7 @@ def get_presentation_as_list_of_slides(path_to_presentation):
     presentation = Presentation(path_to_presentation)
 
     presentation_as_list_of_slides = [get_text_from_slide(slide) for slide in presentation.slides]
-
-    presentation_as_list_of_slides_with_index = [{'index': index + 1, 'text': slide} for index, slide in
-                                                 enumerate(presentation_as_list_of_slides)]
-
-    presentation_as_list_of_slides_filter_empty_slides = filter(lambda s: s['text'] != '',
-                                                                presentation_as_list_of_slides_with_index)
-
-    return list(presentation_as_list_of_slides_filter_empty_slides)
+    return presentation_as_list_of_slides
 
 
 def get_text_from_slide(slide):
@@ -53,11 +47,11 @@ def get_text_from_slide(slide):
            return the slide as string
             example:
 
-            'text box:1  Refactoring code\n
-             text box:2  The process of improving the design ...'
+            '  Refactoring code\n
+              The process of improving the design ...'
       """
     slide_as_list_of_texts_box = []
-    num_slide_run = 1
+
     for shape in slide.shapes:
         if not shape.has_text_frame:
             return ''
@@ -67,10 +61,15 @@ def get_text_from_slide(slide):
         if not paragraph.text:
             continue
 
-        s = f'text box:{num_slide_run}  {paragraph.text}'.strip()
+        s = f'{paragraph.text}'.strip()
         slide_as_list_of_texts_box.append(s)
-        num_slide_run += 1
 
     return '\n'.join(slide_as_list_of_texts_box)
+
+
+if __name__ =='__main__':
+
+    path = input('path:')
+    print(get_presentation_as_list_of_slides(path))
 
 
