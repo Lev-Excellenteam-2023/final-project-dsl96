@@ -50,6 +50,7 @@ if __name__ == '__main__':
          'Generative AI and software products What are the possible uses of generative ai, and natural language processing in software products?']
     # asyncio.run(async_get_explanation_to_presentation(l, topic="end of course exercise"))
     # l = ['End of course exercise']
+    l=['data structures and manipulation in Python', 'Customizing classes - dunder functions\nDunder methods are also known as magic methods or special methods in Python.\nThey are pre-defined methods that allow you to define the behavior of your objects when certain operations are performed on them.\nDunder methods are surrounded by double underscores, hence the name "dunder".\nExamples of dunder methods include __init__, __str__, and __eq__.\n__init__ is used to initialize an object\'s attributes.\n__str__ is used to define how the object should be represented as a string.\n__eq__ is used to define the equality comparison between two objects.']
 
     asyncio.run(async_get_explanation_to_presentation(l, topic="end of course exercise"))
 
