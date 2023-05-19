@@ -3,9 +3,9 @@ import os
 import asyncio
 from config import Config
 import openai
-
 import platform
-if platform.system()=='Windows':
+
+if platform.system() == 'Windows':
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 load_dotenv()
@@ -26,11 +26,10 @@ async def async_get_explanation_to_presentation(list_of_slides, topic):
 
 async def async_ask_openai(prompt):
     try:
-        print('open')
         completion = await openai.ChatCompletion.acreate(max_tokens=Config.MAX_TOKENS, model=Config.MODEL,
                                                          messages=[{"role": "user", "content": prompt}], timeout=2)
     except openai.error.RateLimitError as e:
-        return f'api kei get to th limit msg:{e}'
+        return f'api kei get to the limit msg:{e}'
 
     return completion.choices[0].message.content
 
@@ -50,23 +49,8 @@ if __name__ == '__main__':
          'Generative AI and software development What are the possible uses of generative ai, and natural language processing in software development?',
          'Generative AI and software products What are the possible uses of generative ai, and natural language processing in software products?']
     # asyncio.run(async_get_explanation_to_presentation(l, topic="end of course exercise"))
-   # l = ['End of course exercise']
+    # l = ['End of course exercise']
 
     asyncio.run(async_get_explanation_to_presentation(l, topic="end of course exercise"))
 
 
-'''
-openai.api_key = OPENAI_KEY
-
-# list models
-models = openai.Model.list()
-
-# print the first model's id
-print(models.data[0].id)
-
-# create a completion
-completion =  openai.ChatCompletion.create(max_tokens=3 ,model="gpt-3.5-turbo",  messages=[{"role": "user","content":"what is a chicken"}])
-
-# print the completion
-print(completion.choices[0].message.content)
-'''
