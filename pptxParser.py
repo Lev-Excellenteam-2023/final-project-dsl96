@@ -54,15 +54,15 @@ def get_text_from_slide(slide):
 
     for shape in slide.shapes:
         if not shape.has_text_frame:
-            return ''
-
-    for paragraph in shape.text_frame.paragraphs:
-
-        if not paragraph.text:
             continue
 
-        s = f'{paragraph.text}'.strip()
-        slide_as_list_of_texts_box.append(s)
+        for paragraph in shape.text_frame.paragraphs:
+
+          if not paragraph.text:
+                continue
+
+          s = f'{paragraph.text}'.strip()
+          slide_as_list_of_texts_box.append(s)
 
     return '\n'.join(slide_as_list_of_texts_box)
 
@@ -70,6 +70,7 @@ def get_text_from_slide(slide):
 if __name__ =='__main__':
 
     path = input('path:')
+    path = 'C:\\Users\\dov31\\Desktop\\openaiproject\\reserch\\data_struct.pptx'
     print(get_presentation_as_list_of_slides(path))
 
 
