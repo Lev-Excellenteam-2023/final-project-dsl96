@@ -3,7 +3,7 @@ from pptx import Presentation
 
 def get_presentation_as_list_of_slides(path_to_presentation):
     """
-    Gets   pptx prestataion and read it and return it as list of slides
+    Gets   pptx presentation and read it and return it as list of slides
 
    Parameters
    ----------
@@ -21,11 +21,8 @@ def get_presentation_as_list_of_slides(path_to_presentation):
 
          ' Refactoring code\n
            The process of improving the design ...' ,
-
            ...
        ]
-
-
    """
     presentation = Presentation(path_to_presentation)
 
@@ -67,10 +64,5 @@ def get_text_from_slide(slide):
     return '\n'.join(slide_as_list_of_texts_box)
 
 
-if __name__ =='__main__':
-
-    path = input('path:')
-    path = 'C:\\Users\\dov31\\Desktop\\openaiproject\\reserch\\data_struct.pptx'
-    print(get_presentation_as_list_of_slides(path))
 
 
