@@ -1,6 +1,6 @@
 import asyncio
 import zipfile
-import pptxParser
+from flask_api import pptxParser
 import my_openai
 from pathlib import Path
 import util
