@@ -8,7 +8,7 @@ db = files_db.Filedb()
 def upload_pptx(pptx_file):
     """
        Uploads a PowerPoint file and saves the presentation slides to a upload file.
-       the file will save with name format TIMESTAMP-UID-ORIGINAL_FILE_NAME(NO .pptx EXTENSION)
+       the file will save with name format TIMESTAMP_UID_ORIGINAL_FILE-NAME(NO .pptx EXTENSION)
 
        Parameters:
            pptx_file (FileStorage): The PowerPoint file to upload.
@@ -29,3 +29,21 @@ def upload_pptx(pptx_file):
     uid = db.add(presentation_as_list_of_slides, file_name)
 
     return uid
+
+
+def get_explanation_by_uid(uid):
+    """
+       Retrieve the explanation by unique identifier (UID).
+
+       Args:
+           uid (str): Unique identifier for the explanation.
+
+       Returns:
+          list[str] or None: The list of explanations associated with the given UID, or None if the UID doesn't exist.
+
+       """
+    return db.get_file_ready_to_download_by_uid(uid)
+
+
+def check_if_uid_exist(uid):
+    return uid in db.get_all_upload_files_uid()

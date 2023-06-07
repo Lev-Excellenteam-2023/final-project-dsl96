@@ -55,14 +55,10 @@ def get_text_from_slide(slide):
 
         for paragraph in shape.text_frame.paragraphs:
 
-          if not paragraph.text:
+            if not paragraph.text:
                 continue
 
-          s = f'{paragraph.text}'.strip()
-          slide_as_list_of_texts_box.append(s)
+            s = f'{paragraph.text}'.strip()
+            slide_as_list_of_texts_box.append(s)
 
     return '\n'.join(slide_as_list_of_texts_box)
-
-
-
-
