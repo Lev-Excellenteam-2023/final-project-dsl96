@@ -21,5 +21,6 @@ while running:
      print('run')
      time.sleep(2)
 
+print('stop')
 # Exit the script
 sys.exit(0)
