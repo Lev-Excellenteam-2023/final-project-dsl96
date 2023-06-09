@@ -12,23 +12,26 @@ class Filedb:
         self.UPLOAD_DIR = os.path.join(root_dir, 'files', 'uploads')
         self.DOWNLOADS_DIR = os.path.join(root_dir, 'files', 'download')
         os.makedirs(self.UPLOAD_DIR, exist_ok=True)
-        os.makedirs(self.DOWNLOADS_DIR , exist_ok=True)
+        os.makedirs(self.DOWNLOADS_DIR, exist_ok=True)
 
     def add(self, obj_to_save, name):
         """
           Add an object to be saved as a JSON file to 'uploads' folder
 
           Args: obj_to_save (object): The object to be saved as a JSON file. name (str): The name used for generating
-          the filename. (the finale name is 'unique_id_timestamp_original_name')
+          the filename.
 
           Returns:
-              str: The unique ID associated with the saved file.
+              str: The unique ID associated with the saved file.(the finale name is 'unique_id_timestamp_original_name')
           """
         new_name, new_uid = self.generate_filename(name)
         new_path = os.path.join(self.UPLOAD_DIR, new_name)
 
         with open(new_path, 'w') as file:
-            json.dump(obj_to_save, file)
+            json.dump({
+                'topic': name,
+                'slides': obj_to_save
+            }, file)
 
         return new_uid
 
