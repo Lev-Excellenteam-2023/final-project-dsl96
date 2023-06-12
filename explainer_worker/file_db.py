@@ -17,7 +17,7 @@ class explainer_file_db():
     def get_all_upload_uid(self):
         return [util.extract_uid_from_file_name(file) for file in os.listdir(self.UPLOAD_DIR) if os.path.isfile(os.path.join(self.UPLOAD_DIR, file))]
     def get_all_dowload_uid(self):
-        return [util.extract_uid_from_file_name(file) for file in os.listdir(self.DOWNLOADS_DIR) if os.path.isfile(os.path.join(self.UPLOAD_DIR, file))]
+        return [util.extract_uid_from_file_name(file) for file in os.listdir(self.DOWNLOADS_DIR) if os.path.isfile(os.path.join(self.DOWNLOADS_DIR, file))]
 
 
     def save_to_download(self, obj, uid, name):

@@ -7,7 +7,6 @@ db = db.explainer_file_db()
 
 already_processed_files_uid = set(db.get_all_dowload_uid())
 
-
 async def explain_presentation(slides, name, uid):
     explain = await ai.async_get_explanation_to_presentation(slides, name)
     return {'uid': uid, 'explain': explain, 'name': name}
