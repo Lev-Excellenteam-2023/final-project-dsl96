@@ -59,6 +59,7 @@ class Filedb:
     def get_all_files_names(self, dir):
         return [entry.name for entry in os.scandir(dir) if entry.is_file()]
 
+    #todo use utile
     def generate_filename(self, original_name):
         """
           Generate a unique filename based on the original name.
