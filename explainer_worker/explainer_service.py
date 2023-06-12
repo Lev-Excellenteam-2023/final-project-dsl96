@@ -7,12 +7,30 @@ db = db.explainer_file_db()
 
 already_processed_files_uid = set(db.get_all_dowload_uid())
 
+
 async def explain_presentation(slides, name, uid):
+    """
+    Asynchronously explain a presentation using the AI model.
+
+    Args:
+        slides (list): List of slides in the presentation.
+        name (str): The name of the presentation.
+        uid (str): The UID associated with the presentation.
+
+    Returns:
+        dict: Dictionary containing the UID, explanation, and name.
+    """
     explain = await ai.async_get_explanation_to_presentation(slides, name)
     return {'uid': uid, 'explain': explain, 'name': name}
 
 
 async def explain_new_presentation():
+    """
+    Asynchronously explain new presentations.
+
+    This function retrieves all new uploaded presentations, processes them using the AI model,
+    and saves the explanations to the download directory.
+    """
     all_upload_files_uid = db.get_all_upload_uid()
 
     tasks = []
@@ -29,8 +47,8 @@ async def explain_new_presentation():
     explanations = await asyncio.gather(*tasks)
 
     for exp in explanations:
-        db.save_to_download(exp['explain'], exp['uid'],exp['name'])
-        print('explain' + exp['name'])
+        db.save_to_download(exp['explain'], exp['uid'], exp['name'])
+        print('Explained: ' + exp['name'])
         already_processed_files_uid.add(exp['uid'])
 
 
