@@ -32,6 +32,7 @@ async def explain_new_presentation():
     for exp in explanations:
         db.save_to_download(exp['explain'], exp['uid'],exp['name'])
         print('explain' + exp['name'])
+        already_processed_files_uid.add(exp['uid'])
 
 
 if __name__ == '__main__':

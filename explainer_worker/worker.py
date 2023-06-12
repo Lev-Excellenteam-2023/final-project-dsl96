@@ -25,7 +25,7 @@ async def run_loop():
         print('run')
         await explainer_service.explain_new_presentation()
 
-        time.sleep(10)
+        await asyncio.sleep(2)
 
     print('stop')
     # Exit the script
