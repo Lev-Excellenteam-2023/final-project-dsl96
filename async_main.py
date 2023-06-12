@@ -1,7 +1,7 @@
 import asyncio
 import zipfile
 import pptxParser
-import my_openai
+from explainer_worker import my_openai
 from pathlib import Path
 import util
 import os

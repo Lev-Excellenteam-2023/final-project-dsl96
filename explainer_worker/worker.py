@@ -1,7 +1,8 @@
+import asyncio
 import signal
 import sys
 import time
-from file_db import explainer_file_db
+import explainer_service
 
 # Define a flag to indicate if the loop should continue running
 running = True
@@ -17,13 +18,19 @@ def signal_handler(signal, frame):
 # Register the signal handler
 signal.signal(signal.SIGINT, signal_handler)
 
-if __name__ == '__main__':
-    db = explainer_file_db()
+
+async def run_loop():
     # Run the loop until running flag is set to False
     while running:
-        print(db.get_all_upload_name())
-        time.sleep(2)
+        print('run')
+        await explainer_service.explain_new_presentation()
+
+        time.sleep(10)
 
     print('stop')
     # Exit the script
     sys.exit(0)
+
+
+if __name__ == '__main__':
+    asyncio.run(run_loop())
