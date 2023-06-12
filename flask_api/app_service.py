@@ -1,7 +1,6 @@
 import pptxParser
 import files_db
 import util
-
 db = files_db.Filedb()
 
 
