@@ -16,12 +16,12 @@ def generate_filename(original_name, uid=None):
     """
     if not uid:
         uid = str(uuid.uuid4())
-    timestamp = datetime.now().strftime("h%H_m%M_s%S")
+    timestamp = datetime.now().strftime("h%H-m%M-s%S")
     filename = f"{uid}_{timestamp}_{original_name}"
     return filename, uid
 
 
-def extract_uid_from_file_name(filename):
+def extract_data_from_file_name(filename):
     """
     Extract the UID from a filename.
 
@@ -33,7 +33,9 @@ def extract_uid_from_file_name(filename):
     """
     split_parts = filename.split("_")
     uid = split_parts[0]
-    return uid
+    timestamp = split_parts[1]
+    original_name = split_parts[2]
+    return uid, timestamp, original_name
 
 
 def get_first_file_start_with(folder_path, start):

@@ -57,16 +57,16 @@ def get_explanation():
     if not app_service.check_if_uid_exist(uid):
         error_msg = 'uid doesnt exist'
         logging.error(error_msg)
-        return jsonify({'error_msg': error_msg}), 400
+        return jsonify({'status': error_msg}), 400
 
-    explanation = app_service.get_explanation_by_uid(uid)
+    explanation_data = app_service.get_explanation_by_uid(uid)
 
-    if not explanation:
+    if not explanation_data:
         error_msg = f'explanation {uid} dont ready'
         logging.error(error_msg)
-        return jsonify({'error_msg': error_msg}), 400
+        return jsonify({'status': error_msg}), 400
 
-    return jsonify({'explanation': explanation}), 200
+    return jsonify({**explanation_data, 'status': 'done'}), 200
 
 
 def run_api():

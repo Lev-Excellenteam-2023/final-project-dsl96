@@ -23,7 +23,7 @@ class explainer_file_db():
         Returns:
             list: List of UIDs of uploaded files.
         """
-        return [util.extract_uid_from_file_name(file) for file in os.listdir(self.UPLOAD_DIR) if os.path.isfile(os.path.join(self.UPLOAD_DIR, file))]
+        return [util.extract_data_from_file_name(file)[0] for file in os.listdir(self.UPLOAD_DIR) if os.path.isfile(os.path.join(self.UPLOAD_DIR, file))]
 
     def get_all_download_uid(self):
         """
@@ -32,7 +32,7 @@ class explainer_file_db():
         Returns:
             list: List of UIDs of downloaded files.
         """
-        return [util.extract_uid_from_file_name(file) for file in os.listdir(self.DOWNLOADS_DIR) if os.path.isfile(os.path.join(self.DOWNLOADS_DIR, file))]
+        return [util.extract_data_from_file_name(file)[0] for file in os.listdir(self.DOWNLOADS_DIR) if os.path.isfile(os.path.join(self.DOWNLOADS_DIR, file))]
 
     def save_to_download(self, obj, uid, name):
         """
@@ -54,6 +54,7 @@ class explainer_file_db():
         with open(os.path.join(self.DOWNLOADS_DIR, new_name), 'w') as file:
             # Convert the object to a JSON string and write it to the file
             json.dump(obj, file)
+
         return uid
 
     def get_from_download(self, uid):

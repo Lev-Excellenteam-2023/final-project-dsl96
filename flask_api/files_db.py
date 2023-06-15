@@ -3,6 +3,7 @@ import os
 import re
 import uuid
 from datetime import datetime
+import file_system_db_util as util
 
 
 class Filedb:
@@ -24,7 +25,7 @@ class Filedb:
           Returns:
               str: The unique ID associated with the saved file.(the finale name is 'unique_id_timestamp_original_name')
           """
-        new_name, new_uid = self.generate_filename(name)
+        new_name, new_uid = util.generate_filename(name)
         new_path = os.path.join(self.UPLOAD_DIR, new_name)
 
         with open(new_path, 'w') as file:
@@ -38,7 +39,7 @@ class Filedb:
     def get_file_ready_to_download_by_uid(self, uid):
         all_ready_to_download_files_names = self.get_all_files_names(self.DOWNLOADS_DIR)
         file_name_start_with_uid = next(
-            filter(lambda file_name: self.get_uid_from_file_name(file_name) == uid, all_ready_to_download_files_names),
+            filter(lambda file_name: util.extract_data_from_file_name(file_name)[0] == uid, all_ready_to_download_files_names),
             None)
 
         if not file_name_start_with_uid:
@@ -48,36 +49,20 @@ class Filedb:
         with open(path) as file:
             data = json.load(file)
 
-        return data
-
-    def get_uid_from_file_name(self, file_name):
-        return re.search(r'([^_]+)_', file_name).group(1)
+        uid , timestamp, original_name = util.extract_data_from_file_name(file_name_start_with_uid)
+        return {'uid':uid, 'explain': data, 'original name': original_name, 'timestamp': timestamp}
 
     def get_all_upload_files_uid(self):
-        return [self.get_uid_from_file_name(fname) for fname in self.get_all_files_names(self.UPLOAD_DIR)]
+        return [util.extract_data_from_file_name(fname)[0] for fname in self.get_all_files_names(self.UPLOAD_DIR)]
 
     def get_all_files_names(self, dir):
         return [entry.name for entry in os.scandir(dir) if entry.is_file()]
 
-    #todo use utile
-    def generate_filename(self, original_name):
-        """
-          Generate a unique filename based on the original name.
-          format 'unique-id_timestamp_original-name'
 
-          Args:
-              original_name (str): The original filename.
-
-          Returns:
-              tuple: A tuple containing the generated filename and unique ID.
-          """
-        unique_id = str(uuid.uuid4())
-        timestamp = datetime.now().strftime("h%H_m%M_s%S")
-        return unique_id + '_' + timestamp + '_' + original_name, unique_id
 
 
 if __name__ == '__main__':
     db = Filedb()
-    print(db.get_file_ready_to_download_by_uid('1686085676'))
+    print(db.get_file_ready_to_download_by_uid('21ee163d-29dc-4c91-8c1a-b38b6a690664'))
 
     print(os.path.abspath(__file__))
