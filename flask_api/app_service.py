@@ -38,11 +38,11 @@ def get_explanation_by_uid(uid):
            uid (str): Unique identifier for the explanation.
 
        Returns:
-          list[str] or None: The list of explanations associated with the given UID, or None if the UID dont ready
+           dict: A dictionary containing the UID, data, original name, and timestamp., or None if the UID dont ready
            to download or doesn't exist.
 
        """
-    return db.get_file_ready_to_download_by_uid(uid)
+    return db.get_from_download(uid)
 
 
 def check_if_uid_exist(uid):

@@ -46,8 +46,6 @@ class explainer_file_db():
         Returns:
             str: The UID used for the saved file.
         """
-        if not name.endswith(".json"):
-            name += '.json'
 
         new_name, uid = util.generate_filename(name, uid)
 
@@ -67,10 +65,11 @@ class explainer_file_db():
         Returns:
             object: The object loaded from the file.
         """
-        file_path = util.get_first_file_start_with(self.DOWNLOADS_DIR, uid)
+        file_name= util.get_first_file_start_with(self.DOWNLOADS_DIR, uid)
 
-        if not file_path:
+        if not file_name:
             return None
+        file_path = os.path.join(self.DOWNLOADS_DIR, file_name)
 
         with open(file_path, 'r') as file:
             data = json.load(file)
@@ -85,17 +84,18 @@ class explainer_file_db():
             uid (str): The UID associated with the object.
 
         Returns:
-            object: The object loaded from the file.
+            dict: A dictionary containing the UID, data, original name, and timestamp.
         """
-        file_path = util.get_first_file_start_with(self.UPLOAD_DIR, uid)
-
+        file_name = util.get_first_file_start_with(self.UPLOAD_DIR, uid)
+        file_path = os.path.join(self.UPLOAD_DIR, file_name)
         if not file_path:
             return None
 
         with open(file_path, 'r') as file:
             data = json.load(file)
 
-        return data
+        uid, timestamp, original_name = util.extract_data_from_file_name(file_name)
+        return {'uid': uid, 'data': data, 'original name': original_name, 'timestamp': timestamp}
 
 
 if __name__ == '__main__':

@@ -36,21 +36,29 @@ class Filedb:
 
         return new_uid
 
-    def get_file_ready_to_download_by_uid(self, uid):
-        all_ready_to_download_files_names = self.get_all_files_names(self.DOWNLOADS_DIR)
-        file_name_start_with_uid = next(
-            filter(lambda file_name: util.extract_data_from_file_name(file_name)[0] == uid, all_ready_to_download_files_names),
-            None)
+    def get_from_download(self, uid):
+        """
+            Get an object from the download directory based on the UID.
+
+            Args:
+                uid (str): The UID associated with the object.
+
+            Returns:
+                 dict: A dictionary containing the UID, data, original name, and timestamp.
+        """
+
+        file_name_start_with_uid = util.get_first_file_start_with(self.DOWNLOADS_DIR, uid)
 
         if not file_name_start_with_uid:
             return None
 
         path = os.path.join(self.DOWNLOADS_DIR, file_name_start_with_uid)
+
         with open(path) as file:
             data = json.load(file)
 
         uid , timestamp, original_name = util.extract_data_from_file_name(file_name_start_with_uid)
-        return {'uid':uid, 'explain': data, 'original name': original_name, 'timestamp': timestamp}
+        return {'uid':uid, 'data': data, 'original name': original_name, 'timestamp': timestamp}
 
     def get_all_upload_files_uid(self):
         return [util.extract_data_from_file_name(fname)[0] for fname in self.get_all_files_names(self.UPLOAD_DIR)]
@@ -61,6 +69,6 @@ class Filedb:
 
 if __name__ == '__main__':
     db = Filedb()
-    print(db.get_file_ready_to_download_by_uid('21ee163d-29dc-4c91-8c1a-b38b6a690664'))
+    print(db.get_from_download('21ee163d-29dc-4c91-8c1a-b38b6a690664'))
 
     print(os.path.abspath(__file__))

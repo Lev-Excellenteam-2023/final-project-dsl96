@@ -15,8 +15,8 @@ class FileUploadClient:
         with open(file_path, 'rb') as file:
             response = requests.post(url, files={'file': file})
             if response.status_code == 200:
-                data = json.loads(response.text)
-                uid = data['UID']
+                response = json.loads(response.text)
+                uid = response['UID']
                 return uid
             else:
                 raise Exception(f"File upload failed with status code: {response.status_code}")
@@ -30,11 +30,11 @@ class FileUploadClient:
             status = data['status']
 
             if status == 'pending':
-                return Status(status, None, None, None)
+                return Status(status, None, None, None, uid)
             filename = data['original name']
             timestamp = datetime.strptime(data['timestamp'], '%H-%M-%S')
-            explanation = data['explain']
-            return Status(status, filename, timestamp, explanation)
+            explanation = data['data']
+            return Status(status, filename, timestamp, explanation, uid)
         else:
             raise Exception(f"Status retrieval failed with status code: {response.status_code}/"
                             f"{response.text}")
@@ -47,6 +47,7 @@ if __name__ == '__main__':
     s = client.status(uid)
 
     while not s.is_done():
+        print('send')
         time.sleep(5)
         s = client.status(uid)
 

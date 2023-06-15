@@ -1,3 +1,4 @@
+import os
 import uuid
 import glob
 from datetime import datetime
@@ -23,14 +24,14 @@ def generate_filename(original_name, uid=None):
 
 def extract_data_from_file_name(filename):
     """
-    Extract the UID from a filename.
+       Extracts the UID, timestamp, and original name from a filename.
 
-    Args:
-        filename (str): The filename from which to extract the UID.
+       Args:
+           filename (str): The filename from which to extract the UID, timestamp, and original name.
 
-    Returns:
-        str: The extracted UID.
-    """
+       Returns:
+           tuple: A tuple containing the extracted UID, timestamp, and original name.
+       """
     split_parts = filename.split("_")
     uid = split_parts[0]
     timestamp = split_parts[1]
@@ -47,11 +48,19 @@ def get_first_file_start_with(folder_path, start):
         start (str): The starting string of the filename.
 
     Returns:
-        str or None: The path of the first matching file, or None if no matching files are found.
+        str or None: The filename of the first matching file, or None if no matching files are found.
     """
     file_pattern = folder_path + '\\' + start + "*"
     matching_files = glob.glob(file_pattern)
 
     if not matching_files:
         return None
-    return matching_files[0]
+
+    first_matching_file = matching_files[0]
+    filename = os.path.basename(first_matching_file)
+    return filename
+
+if __name__ =='__main__':
+    print(get_first_file_start_with('C:\\Users\\dov31\\Desktop\\Task05', 'T'))
+
+
