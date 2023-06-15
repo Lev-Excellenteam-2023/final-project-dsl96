@@ -48,7 +48,7 @@ async def explain_new_presentation():
         presentation = db.get_from_uploads(uid)
 
         # todo change topic to name
-        tasks.append(explain_presentation(presentation['slides'], presentation['topic'], uid))
+        tasks.append(explain_presentation(presentation['slides'], presentation['name'], uid))
 
     explanations = await asyncio.gather(*tasks)
 

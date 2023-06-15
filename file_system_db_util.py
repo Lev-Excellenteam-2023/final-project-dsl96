@@ -16,7 +16,7 @@ def generate_filename(original_name, uid=None):
     """
     if not uid:
         uid = str(uuid.uuid4())
-    timestamp = datetime.now().strftime("h%H-m%M-s%S")
+    timestamp = datetime.now().strftime("%H-%M-%S")
     filename = f"{uid}_{timestamp}_{original_name}"
     return filename, uid
 

@@ -30,7 +30,7 @@ class Filedb:
 
         with open(new_path, 'w') as file:
             json.dump({
-                'topic': name,
+                'name': name,
                 'slides': obj_to_save
             }, file)
 
@@ -57,8 +57,6 @@ class Filedb:
 
     def get_all_files_names(self, dir):
         return [entry.name for entry in os.scandir(dir) if entry.is_file()]
-
-
 
 
 if __name__ == '__main__':

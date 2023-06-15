@@ -45,7 +45,7 @@ def upload_file():
     return jsonify(response), 200
 
 
-@app.route('/explanation', methods=['GET'])
+@app.route('/status', methods=['GET'])
 def get_explanation():
     uid = request.args.get('uid')
 
@@ -55,16 +55,16 @@ def get_explanation():
         return jsonify({'error_msg': error_msg}), 400
 
     if not app_service.check_if_uid_exist(uid):
-        error_msg = 'uid doesnt exist'
+        error_msg = 'not found'
         logging.error(error_msg)
         return jsonify({'status': error_msg}), 400
 
     explanation_data = app_service.get_explanation_by_uid(uid)
 
     if not explanation_data:
-        error_msg = f'explanation {uid} dont ready'
-        logging.error(error_msg)
-        return jsonify({'status': error_msg}), 400
+        msg = f'pending'
+        logging.error(msg)
+        return jsonify({'status': msg}), 200
 
     return jsonify({**explanation_data, 'status': 'done'}), 200
 
