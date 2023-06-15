@@ -32,13 +32,14 @@ def upload_pptx(pptx_file):
 
 def get_explanation_by_uid(uid):
     """
-       Retrieve the explanation by unique identifier (UID).
+       Retrieve the explanation ready to download by unique identifier (UID).
 
        Args:
            uid (str): Unique identifier for the explanation.
 
        Returns:
-          list[str] or None: The list of explanations associated with the given UID, or None if the UID doesn't exist.
+          list[str] or None: The list of explanations associated with the given UID, or None if the UID dont ready
+           to download or doesn't exist.
 
        """
     return db.get_file_ready_to_download_by_uid(uid)
