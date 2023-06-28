@@ -3,3 +3,9 @@
 
 # Ignore virtual environment
 venv/
+
+.env
+
+__pycache__/
+
+files/
