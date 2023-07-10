@@ -1,33 +1,47 @@
+import datetime
+
 import pptxParser
 import files_db
 import util
+from tabels import Upload, Status,_session
+from sql_db import sqldb
+
 db = files_db.Filedb()
+
+sql_db = sqldb()
 
 
 def upload_pptx(pptx_file):
     """
-       Uploads a PowerPoint file and saves the presentation slides to a upload file.
-       the file will save with name format TIMESTAMP_UID_ORIGINAL_FILE-NAME(NO .pptx EXTENSION)
+       Uploads a PowerPoint file and saves the details in sql and the slides in file
 
        Parameters:
            pptx_file (FileStorage): The PowerPoint file to upload.
 
        Returns:
-           str: The unique identifier (UID) associated with the uploaded presentation.
+           int: The unique id associated with the uploaded presentation.
 
        Raises:
            ValueError: If the provided file is not a valid PowerPoint file.
 
        Example:
-           uid = upload_pptx(pptx_file)
+           id = upload_pptx(pptx_file)
 
        """
     presentation_as_list_of_slides = pptxParser.get_presentation_as_list_of_slides(pptx_file)
-    file_name = util.get_file_name_without_extension(pptx_file.filename)
 
-    uid = db.add(presentation_as_list_of_slides, file_name)
+    upload = Upload(
+        upload_time=datetime.datetime.now(),
+        status=Status.pending,
+        filename=pptx_file.filename
 
-    return uid
+    )
+
+    sql_db.add_Upload(upload)
+
+    db.save(presentation_as_list_of_slides, upload.upload_path)
+
+    return upload.id
 
 
 def get_explanation_by_uid(uid):
@@ -42,8 +56,16 @@ def get_explanation_by_uid(uid):
            to download or doesn't exist.
 
        """
-    return db.get_from_download(uid)
+    upload =  sql_db.get_Upload(uid)
+
+    if not upload:
+        return None
+
+    upload_dict = upload.to_dict()
+    if upload.status != Status.pending:
+        upload_dict['explain'] = db.get(upload.downloads_path)
+
+    upload_dict['slides'] = db.get(upload.upload_path)
+    return upload_dict
 
 
-def check_if_uid_exist(uid):
-    return uid in db.get_all_upload_files_uid()

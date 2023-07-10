@@ -41,6 +41,7 @@ async def async_get_explanation_to_presentation(list_of_slides, topic):
           list: A list of explanations for each slide.
 
       """
+
     tasks_slide_explains = [get_explanation_to_slide(slide_text, topic) for slide_text in list_of_slides]
     explanations_list = await asyncio.gather(*tasks_slide_explains)
     return explanations_list

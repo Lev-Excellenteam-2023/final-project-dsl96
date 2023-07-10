@@ -2,6 +2,7 @@ import logging
 from zipfile import BadZipFile
 from flask import Flask, request, jsonify
 import app_service
+from tabels import Status
 
 app = Flask(__name__)
 
@@ -47,26 +48,21 @@ def upload_file():
 
 @app.route('/status', methods=['GET'])
 def get_explanation():
-    uid = request.args.get('uid')
+    uid = int(request.args.get('uid'))
 
     if not uid:
         error_msg = 'Missing UID parameter'
         logging.error(error_msg)
         return jsonify({'error_msg': error_msg}), 400
 
-    if not app_service.check_if_uid_exist(uid):
+    explanation_data = app_service.get_explanation_by_uid(uid)
+
+    if not explanation_data:
         error_msg = 'not found'
         logging.error(error_msg)
         return jsonify({'status': error_msg}), 400
 
-    explanation_data = app_service.get_explanation_by_uid(uid)
-
-    if not explanation_data:
-        msg = f'pending'
-        logging.error(msg)
-        return jsonify({'status': msg}), 200
-
-    return jsonify({**explanation_data, 'status': 'done'}), 200
+    return jsonify(explanation_data), 200
 
 
 def run_api():
