@@ -12,15 +12,15 @@ root_dir = os.path.dirname(file_path)
 TABLE_DIR = os.path.join(root_dir, 'database')
 os.makedirs(TABLE_DIR, exist_ok=True)
 print(TABLE_DIR)
-print('lllllllllllllllllllllllllllllllllll')
-engine = create_engine(f'sqlite+pysqlite:///{TABLE_DIR}//sqlite.db', echo=True)
+
+engine = create_engine(f'sqlite+pysqlite:///{TABLE_DIR}//sqlite.db', echo=False)
 
 _session = sessionmaker(bind=engine)
 
 
 class Status(enum.Enum):
     pending = 1
-    ready = 2
+    complete = 2
     sent = 3
 
 

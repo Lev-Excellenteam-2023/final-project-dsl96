@@ -34,7 +34,6 @@ def upload_pptx(pptx_file):
         upload_time=datetime.datetime.now(),
         status=Status.pending,
         filename=pptx_file.filename
-
     )
 
     sql_db.add_Upload(upload)
@@ -49,23 +48,22 @@ def get_explanation_by_uid(uid):
        Retrieve the explanation ready to download by unique identifier (UID).
 
        Args:
-           uid (str): Unique identifier for the explanation.
+           uid (int): Unique identifier for the explanation.
 
        Returns:
-           dict: A dictionary containing the UID, data, original name, and timestamp., or None if the UID dont ready
-           to download or doesn't exist.
-
+           dict: A dictionary containing the UID, data, original name, and timestamp., or None if the UID doesn't exist.
        """
-    upload =  sql_db.get_Upload(uid)
+    upload = sql_db.get_Upload(uid)
 
     if not upload:
         return None
 
     upload_dict = upload.to_dict()
+    upload_dict['slides'] = db.get(upload.upload_path)
+
     if upload.status != Status.pending:
         upload_dict['explain'] = db.get(upload.downloads_path)
 
-    upload_dict['slides'] = db.get(upload.upload_path)
     return upload_dict
 
 
