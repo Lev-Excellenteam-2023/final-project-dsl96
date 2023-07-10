@@ -38,20 +38,23 @@ async def explain_new_presentation():
     """
     Asynchronously explain new presentations.
 
-    This function retrieves all new uploaded presentations, processes them using the AI model,
+    This function retrieves all pending presentations, processes them using the AI model,
     and saves the explanations.
     """
     logger.info("Checking for new presentations...")
-    pending_upload = sql_db.get_uploads_by_status(status=Status.pending)
-    logger.info(f"Found {len(pending_upload)} pending presentation(s).")
-    logger.info(f"{pending_upload}")
+    pending_uploads = sql_db.get_uploads_by_status(status=Status.pending)
+    logger.info(f"Found {len(pending_uploads)} pending presentation(s).")
+
+    if not pending_uploads:
+        return
+    logger.info(f"{pending_uploads}")
 
     explain_tasks = [explain_presentation(file_db.get(upload.upload_path), upload.filename) for upload in
-                     pending_upload]
+                     pending_uploads]
     explanations = await asyncio.gather(*explain_tasks, return_exceptions=True)
 
     uploads_id_change_status = []
-    for upload, explain in zip(pending_upload, explanations):
+    for upload, explain in zip(pending_uploads, explanations):
         if isinstance(explain, Exception):
             logger.error(f"Error occurred while explaining presentation: {explain}")
             continue
