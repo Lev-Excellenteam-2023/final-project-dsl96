@@ -60,7 +60,7 @@ def get_explanation():
     if not explanation_data:
         error_msg = 'not found'
         logging.error(error_msg)
-        return jsonify({'status': error_msg}), 400
+        return jsonify({'msg': error_msg}), 400
 
     return jsonify(explanation_data), 200
 

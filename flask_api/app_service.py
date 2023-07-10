@@ -1,8 +1,6 @@
 import datetime
-
 import pptxParser
 import files_db
-import util
 from tabels import Upload, Status,_session
 from sql_db import sqldb
 

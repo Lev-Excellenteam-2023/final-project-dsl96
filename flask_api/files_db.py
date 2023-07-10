@@ -6,12 +6,9 @@ class Filedb:
     def __init__(self):
         # get dir to file folder (create if dont exist)
         root_dir = os.path.dirname(os.getcwd())
-      #  self.UPLOAD_DIR = os.path.join(root_dir, 'files', 'uploads')
-       # self.DOWNLOADS_DIR = os.path.join(root_dir, 'files', 'download')
         self.SAVE_DIR = os.path.join(root_dir, 'files' )
-      #  os.makedirs(self.UPLOAD_DIR, exist_ok=True)
         os.makedirs(self.SAVE_DIR, exist_ok=True)
-       #
+
 
     def save(self, obj, name):
         file_path = os.path.join(self.SAVE_DIR, name + '.json')
