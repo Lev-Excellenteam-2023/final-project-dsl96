@@ -1,7 +1,7 @@
 import datetime
 import pptxParser
 import files_db
-from tabels import Upload, Status,_session
+from tabels import Upload, Status, _session, User
 from sql_db import sqldb
 
 db = files_db.Filedb()
@@ -38,7 +38,7 @@ def upload_pptx(pptx_file):
 
     db.save(presentation_as_list_of_slides, upload.upload_path)
 
-    return upload.id
+    return upload
 
 
 def get_explanation_by_uid(uid):
@@ -65,3 +65,7 @@ def get_explanation_by_uid(uid):
     return upload_dict
 
 
+def create_user(*, email):
+    user = User(email=email)
+    sql_db.add_user(user)
+    return user

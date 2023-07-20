@@ -31,19 +31,14 @@ def upload_file():
         return jsonify({'error_msg': error_msg}), 400
 
     try:
-        uid = app_service.upload_pptx(file)
+        upload = app_service.upload_pptx(file)
     except (BadZipFile, ValueError) as e:
         error_message = str(e)
         logging.error('Invalid file format: %s', error_message)
         return jsonify({'error_msg': 'Invalid file format: ' + error_message}), 400
 
-    response = {
-        'msg': 'File saved successfully!',
-        'UID': uid
-    }
-
-    logging.info('File uploaded successfully with UID: %s', uid)
-    return jsonify(response), 200
+    logging.info('File uploaded successfully with UID: %s', upload.id)
+    return jsonify(upload.to_dict()), 200
 
 
 @app.route('/status', methods=['GET'])
@@ -63,6 +58,23 @@ def get_explanation():
         return jsonify({'msg': error_msg}), 400
 
     return jsonify(explanation_data), 200
+
+
+@app.route('/add_user', methods=['POST'])
+def add_user():
+    email = request.form.get('email')
+
+    if not email:
+        return jsonify({'error': 'Email not provided'}), 400
+
+    try:
+        new_user = app_service.create_user(email=email)
+    except (ValueError,) as e:
+        error_message = str(e)
+        logging.error(error_message)
+        return jsonify({'error_msg': error_message}), 400
+
+    return jsonify(new_user.to_dict()), 200
 
 
 def run_api():

@@ -1,10 +1,8 @@
-import datetime
-import os
-import uuid
+import os, enum, datetime, uuid
 from typing import List, Optional
 from sqlalchemy import String, create_engine, ForeignKey, Enum, Uuid
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, sessionmaker
-import enum
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, sessionmaker, validates
+from email_validate import validate
 
 # get dir to sqlite (create if dont exist)
 file_path = os.path.abspath(__file__)
@@ -33,6 +31,27 @@ class User(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     email: Mapped[str] = mapped_column(unique=True)
     uploads: Mapped[List["Upload"]] = relationship("Upload", back_populates="user", cascade="all, delete")
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "email": self.email
+        }
+
+    @validates('email')
+    def validate_email_format(self, key, email):
+        if not validate(
+                email_address=email,
+                check_format=True,
+                check_smtp=False):
+            raise ValueError('Invalid email format')
+
+        if not validate(
+                 email_address=email,
+                 check_smtp=True):
+            raise ValueError('email dont exist')
+
+        return email
 
     def __repr__(self) -> str:
         return f"User(id={self.id!r}, email={self.email!r})"
@@ -67,6 +86,7 @@ class Upload(Base):
             "status": self.status.name,
             "user_id": self.user_id,
         }
+
     def __repr__(self) -> str:
         return f"Upload(id={self.id}, user_id={self.user_id} ,uuid={self.uid}, status={self.status} )"
 
