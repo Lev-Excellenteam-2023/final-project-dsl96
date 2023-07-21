@@ -30,7 +30,7 @@ class User(Base):
     __tablename__ = "user"
     id: Mapped[int] = mapped_column(primary_key=True)
     email: Mapped[str] = mapped_column(unique=True)
-    uploads: Mapped[List["Upload"]] = relationship("Upload", back_populates="user", cascade="all, delete")
+    uploads: Mapped[List["Upload"]] = relationship("Upload", back_populates="user", cascade="all, delete", lazy='joined')
 
     def to_dict(self):
         return {

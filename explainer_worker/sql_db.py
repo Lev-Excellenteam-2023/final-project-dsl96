@@ -10,7 +10,7 @@ class sqldb:
             return s.execute(query).scalars().all()
 
     def update_uploadds_by_id_list(self, id_list, updates_dict):
-        query = update(Upload).where(Upload.id.in_(id_list)).values(updates_dict)
+        query = update(Upload).where(Upload.id.in_(id_list)).values(**updates_dict)
         with _session() as s:
             s.execute(query)
             s.commit()
