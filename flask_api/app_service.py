@@ -50,7 +50,6 @@ def upload_pptx(pptx_file, user_email=None):
     return make_response_dict_from_upload(upload)
 
 
-
 def get_latest_upload_by_filename(uploads, filename):
     """
           Retrieve  list of uploads.
@@ -137,6 +136,5 @@ def get_user(*, email):
 if __name__ == '__main__':
     file_db = sqldb()
 
-
-    u =  get_user(email='206tamar@gmail.com')
+    u = get_user(email='206tamar@gmail.com')
     print(u)

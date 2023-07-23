@@ -65,7 +65,6 @@ def get_upload_by_mail_filename():
     if not email or not filename:
         error_msg = 'Missing filename or email'
         return return_error_and_log(error_msg)
-
     try:
         upload_data = app_service.get_upload_by_mail_filename(email=email, filename=filename)
     except ValueError as e:
