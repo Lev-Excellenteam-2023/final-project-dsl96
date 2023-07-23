@@ -35,7 +35,8 @@ class User(Base):
     def to_dict(self):
         return {
             "id": self.id,
-            "email": self.email
+            "email": self.email,
+            "uploads": [upload.to_dict() for upload in self.uploads]
         }
 
     @validates('email')
@@ -84,7 +85,7 @@ class Upload(Base):
             "upload_time": self.upload_time.strftime("%Y-%m-%d %H:%M:%S"),
             "finish_time": self.finish_time.strftime("%Y-%m-%d %H:%M:%S") if self.finish_time else None,
             "status": self.status.name,
-            "user_id": self.user_id,
+            "user_id": self.user_id
         }
 
     def __repr__(self) -> str:

@@ -152,5 +152,5 @@ if __name__ == '__main__':
         upload_time=datetime .utcnow(),
         status=Status .pending,
     )
-    u = db.get_user_by_id(1)
-    print(u )
+    u = db.add_upload_to_user_by_email('206tamar@gmail.com', new_upload)
+    print(u)
