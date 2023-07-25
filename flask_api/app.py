@@ -1,10 +1,8 @@
 import logging
-import sqlite3
 from zipfile import BadZipFile
 from flask import Flask, request, jsonify
 import app_service
 from sqlalchemy.exc import IntegrityError
-from tabels import Status
 
 app = Flask(__name__)
 
@@ -42,12 +40,25 @@ def upload_file():
 
 
 @app.route('/status', methods=['GET'])
-def get_explanation_by_uid():
+def get_upload():
     id = request.args.get('id', None)
+    email = request.args.get('email', None)
+    filename = request.args.get('filename', None)
 
-    if not id:
-        error_msg = 'Missing UID parameter'
+    id_mode = id and not (email or filename)
+    email_filename_mode = email and filename and not id
+
+    if not (id_mode or email_filename_mode):
+        error_msg = 'this endpoint should get id or email and file name'
         return return_error_and_log(error_msg)
+
+    if id_mode:
+        return get_upload_by_id(id)
+
+    return get_upload_by_email_filename(email, filename)
+
+
+def get_upload_by_id(id):
     try:
         upload_data = app_service.get_explanation_by_uid(int(id))
     except ValueError as e:
@@ -57,20 +68,12 @@ def get_explanation_by_uid():
     return jsonify(upload_data), 200
 
 
-@app.route('/status', methods=['POST'])
-def get_upload_by_mail_filename():
-    email = request.form.get('email', None)
-    filename = request.form.get('filename', None)
-
-    if not email or not filename:
-        error_msg = 'Missing filename or email'
-        return return_error_and_log(error_msg)
+def get_upload_by_email_filename(email, filename):
     try:
         upload_data = app_service.get_upload_by_mail_filename(email=email, filename=filename)
     except ValueError as e:
         error_message = str(e)
         return return_error_and_log(error_message)
-
     return jsonify(upload_data), 200
 
 
