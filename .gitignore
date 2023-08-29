@@ -1,5 +1,11 @@
-# Ignore PyCharm files
 .idea/
 
-# Ignore virtual environment
 venv/
+
+.env
+
+__pycache__/
+
+files/
+database/
+/supervisord.conf
