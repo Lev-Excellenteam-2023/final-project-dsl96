@@ -4,6 +4,7 @@ from sqlalchemy import String, create_engine, ForeignKey, Enum, Uuid
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, sessionmaker, validates
 from email_validate import validate
 
+
 # get dir to sqlite (create if dont exist)
 file_path = os.path.abspath(__file__)
 root_dir = os.path.dirname(file_path)

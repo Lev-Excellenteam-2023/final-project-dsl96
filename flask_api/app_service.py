@@ -4,7 +4,7 @@ import api_files_db
 from tabels import Upload, Status, _session, User
 from api_sql_db import sqldb
 
-file_db = files_db.Filedb()
+file_db = api_files_db.Filedb()
 
 sql_db = sqldb()
 
