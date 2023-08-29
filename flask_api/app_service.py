@@ -2,7 +2,7 @@ import datetime
 import pptxParser
 import files_db
 from tabels import Upload, Status, _session, User
-from sql_db import sqldb
+from api_sql_db import sqldb
 
 file_db = files_db.Filedb()
 

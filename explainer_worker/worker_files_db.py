@@ -2,7 +2,9 @@ import json
 import os
 
 
-
+'''
+this class stor files in the file system with json extention 
+'''
 class Filedb:
     def __init__(self):
         root_dir = os.path.dirname(os.getcwd())

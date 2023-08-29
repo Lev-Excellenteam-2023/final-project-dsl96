@@ -1,7 +1,7 @@
 import datetime
 import os
-from sql_db import sqldb
-from files_db import Filedb
+from worker_sql_db import sqldb
+from worker_files_db import Filedb
 import my_openai as ai
 import asyncio
 import logging
